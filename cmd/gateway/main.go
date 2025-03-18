@@ -226,6 +226,25 @@ func run(cmd *cobra.Command, _ []string) error {
 		return fmt.Errorf("unable to setup firewall configuration reconciler: %w", err)
 	}
 
+	fw2cr, err := firewall.NewFirewallConfigurationReconcilerWithFinalizer(
+		mgr.GetClient(),
+		mgr.GetScheme(),
+		"SecureGatewayController",
+		mgr.GetEventRecorderFor("firewall-secure-controller"),
+		[]labels.Set{
+			map[string]string{
+				"liqo.io/firewall-category": "secureGateway",
+			},
+		},
+	)
+	if err != nil {
+		return fmt.Errorf("unable to create firewall configuration reconciler: %w", err)
+	}
+
+	if err := fw2cr.SetupWithManager(cmd.Context(), mgr, true); err != nil {
+		return fmt.Errorf("unable to setup firewall configuration reconciler: %w", err)
+	}
+
 	runnable, err := concurrent.NewRunnableGatewayStartup(
 		cl,
 		connoptions.GwOptions.PodName,

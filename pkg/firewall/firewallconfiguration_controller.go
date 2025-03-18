@@ -175,10 +175,17 @@ func (r *FirewallConfigurationReconciler) SetupWithManager(ctx context.Context, 
 			utilruntime.Must(netmonitor.InterfacesMonitoring(ctx, src, &netmonitor.Options{Nftables: &netmonitor.OptionsNftables{Delete: true}}))
 		}()
 	}
-	return ctrl.NewControllerManagedBy(mgr).Named(consts.CtrlFirewallConfiguration).
-		For(&networkingv1beta1.FirewallConfiguration{}, builder.WithPredicates(filterByLabelsPredicate)).
-		WatchesRawSource(NewFirewallWatchSource(src, NewFirewallWatchEventHandler(r.Client, r.LabelsSets))).
-		Complete(r)
+	if r.PodName == "SecureGatewayController" {
+		return ctrl.NewControllerManagedBy(mgr).Named(consts.CtrlFirewallConfigurationFinalized).
+			For(&networkingv1beta1.FirewallConfiguration{}, builder.WithPredicates(filterByLabelsPredicate)).
+			WatchesRawSource(NewFirewallWatchSource(src, NewFirewallWatchEventHandler(r.Client, r.LabelsSets))).
+			Complete(r)
+	} else {
+		return ctrl.NewControllerManagedBy(mgr).Named(consts.CtrlFirewallConfiguration).
+			For(&networkingv1beta1.FirewallConfiguration{}, builder.WithPredicates(filterByLabelsPredicate)).
+			WatchesRawSource(NewFirewallWatchSource(src, NewFirewallWatchEventHandler(r.Client, r.LabelsSets))).
+			Complete(r)
+	}
 }
 
 // forgeLabelsPredicate returns a predicate that filters the resources based on the given labels.
