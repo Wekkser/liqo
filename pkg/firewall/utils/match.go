@@ -277,7 +277,7 @@ func applyMatchIPRange(m *firewallv1beta1.Match, rule *nftables.Rule, op expr.Cm
 			Len:          4,
 		},
 		&expr.Range{
-			Op:       op, // Greater than or equal to
+			Op:       op,
 			Register: 1,
 			FromData: startIP,
 			ToData:   endIP,

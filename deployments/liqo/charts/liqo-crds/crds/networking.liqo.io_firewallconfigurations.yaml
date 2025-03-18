@@ -108,8 +108,8 @@ spec:
                                     - reject
                                     type: string
                                   counter:
-                                    description: Counter is the counter to be used
-                                      for the action.
+                                    description: Counter enables the counter for the
+                                      rule, updated every time the rule is hit.
                                     type: boolean
                                   match:
                                     description: |-
@@ -210,6 +210,7 @@ spec:
                                     type: string
                                 required:
                                 - action
+                                - counter
                                 - match
                                 type: object
                               type: array

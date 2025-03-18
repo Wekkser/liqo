@@ -40,7 +40,7 @@ const (
 type FilterRule struct {
 	// Name is the name of the rule.
 	Name *string `json:"name,omitempty"`
-	// Counter will enable the counter for the rule, updated every time the rule is hit.
+	// Counter enables the counter for the rule, updated every time the rule is hit.
 	Counter bool `json:"counter"`
 	// Match is the match to be applied to the rule.
 	// They can be multiple and they are applied with an AND operator.
