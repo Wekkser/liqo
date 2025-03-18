@@ -24,15 +24,12 @@ const (
 	// ActionSetMetaMarkFromCtMark is the action to be applied to the rule.
 	// It is used to set the meta mark from the conntrack mark.
 	ActionSetMetaMarkFromCtMark FilterAction = "metamarkfromctmark"
-
 	// ActionAccept is the action to be applied to the rule.
 	// ActionAccept accepts the packet.
 	ActionAccept FilterAction = "accept"
-
 	// ActionDrop is the action to be applied to the rule.
 	// ActionDrop drops the packet.
 	ActionDrop FilterAction = "drop"
-
 	// ActionReject is the action to be applied to the rule.
 	// ActionReject reject the packet with response.
 	ActionReject FilterAction = "reject"
@@ -43,8 +40,8 @@ const (
 type FilterRule struct {
 	// Name is the name of the rule.
 	Name *string `json:"name,omitempty"`
-	// Counter is the counter to be used for the action.
-	Counter bool `json:"counter,omitempty"`
+	// Counter will enable the counter for the rule, updated every time the rule is hit.
+	Counter bool `json:"counter"`
 	// Match is the match to be applied to the rule.
 	// They can be multiple and they are applied with an AND operator.
 	Match []Match `json:"match"`
